@@ -18,13 +18,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { FormError } from '@/components/form-error';
-import { FormSuccess } from '@/components/form-success';
 import { login } from '@/actions/login';
 
 export function LoginForm() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>('');
-  const [success, setSuccess] = useState<string | undefined>('');
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -35,11 +33,9 @@ export function LoginForm() {
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError('');
-    setSuccess('');
     startTransition(() => {
       login(values).then((data) => {
-        setSuccess(data.success);
-        setError(data.error);
+        setError(data?.error);
       });
     });
   };
@@ -88,7 +84,6 @@ export function LoginForm() {
           />
         </div>
         <FormError message={error} />
-        <FormSuccess message={success} />
         <Button
           className="w-full"
           type="submit"
