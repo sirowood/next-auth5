@@ -4,7 +4,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 
 import { db } from '@/lib/db';
 import authConfig from '@/auth.config';
-import { getUserById } from './data/user';
+import { getUserByEmail, getUserById } from './data/user';
 import { UserRole } from '@prisma/client';
 
 declare module 'next-auth' {
@@ -69,6 +69,22 @@ export const {
       }
 
       return session;
+    },
+    async signIn({ user, account }) {
+      console.log({ user, account });
+      // Allow OAuth without email verification
+      if (account?.provider !== 'credentials') {
+        return true;
+      }
+
+      const existingUser = await getUserById(user.id!);
+
+      if (!existingUser?.emailVerified) {
+        return false;
+      }
+
+      // TODO: Add 2FA check
+      return true;
     },
   },
   adapter: PrismaAdapter(db),
