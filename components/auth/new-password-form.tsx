@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { useSearchParams } from 'next/navigation';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
 
-import { LoginSchema } from '@/schemas';
-
+import { newPassword } from '@/actions/new-password';
+import { NewPasswordSchema } from '@/schemas';
 import {
   Form,
   FormControl,
@@ -19,28 +19,29 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { FormError } from '@/components/form-error';
-import { login } from '@/actions/login';
-import { FormSuccess } from '../form-success';
+import { FormSuccess } from '@/components/form-success';
 
-export function LoginForm() {
+export function NewPasswordForm() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token') || undefined;
+
   const [isPending, startTransition] = useTransition();
-  const [success, setSuccess] = useState<string | undefined>('');
   const [error, setError] = useState<string | undefined>('');
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const [success, setSuccess] = useState<string | undefined>('');
+  const form = useForm<z.infer<typeof NewPasswordSchema>>({
+    resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
-      email: '',
       password: '',
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
     setError('');
     setSuccess('');
     startTransition(() => {
-      login(values).then((data) => {
-        setError(data?.error);
-        setSuccess(data?.success);
+      newPassword(values, token).then(({ error, success }) => {
+        setError(error);
+        setSuccess(success);
       });
     });
   };
@@ -52,24 +53,6 @@ export function LoginForm() {
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <div className="space-y-2">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder="john.doe@example.com"
-                    type="email"
-                    disabled={isPending}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="password"
@@ -87,14 +70,6 @@ export function LoginForm() {
               </FormItem>
             )}
           />
-          <Button
-            size="sm"
-            variant="link"
-            asChild
-            className="px-0 font-normal"
-          >
-            <Link href="/auth/reset">Forgot your password?</Link>
-          </Button>
         </div>
         <FormError message={error} />
         <FormSuccess message={success} />
@@ -103,7 +78,7 @@ export function LoginForm() {
           type="submit"
           disabled={isPending}
         >
-          Login
+          Reset password
         </Button>
       </form>
     </Form>

@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 
-import { LoginSchema } from '@/schemas';
+import { ResetSchema } from '@/schemas';
 
 import {
   Form,
@@ -21,26 +21,26 @@ import { Button } from '@/components/ui/button';
 import { FormError } from '@/components/form-error';
 import { login } from '@/actions/login';
 import { FormSuccess } from '../form-success';
+import { reset } from '@/actions/reset';
 
-export function LoginForm() {
+export function ResetForm() {
   const [isPending, startTransition] = useTransition();
   const [success, setSuccess] = useState<string | undefined>('');
   const [error, setError] = useState<string | undefined>('');
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof ResetSchema>>({
+    resolver: zodResolver(ResetSchema),
     defaultValues: {
       email: '',
-      password: '',
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof ResetSchema>) => {
     setError('');
     setSuccess('');
     startTransition(() => {
-      login(values).then((data) => {
-        setError(data?.error);
-        setSuccess(data?.success);
+      reset(values).then(({ success, error }) => {
+        setError(error);
+        setSuccess(success);
       });
     });
   };
@@ -70,31 +70,6 @@ export function LoginForm() {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="password"
-                    disabled={isPending}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button
-            size="sm"
-            variant="link"
-            asChild
-            className="px-0 font-normal"
-          >
-            <Link href="/auth/reset">Forgot your password?</Link>
-          </Button>
         </div>
         <FormError message={error} />
         <FormSuccess message={success} />
@@ -103,7 +78,7 @@ export function LoginForm() {
           type="submit"
           disabled={isPending}
         >
-          Login
+          Send reset email
         </Button>
       </form>
     </Form>
