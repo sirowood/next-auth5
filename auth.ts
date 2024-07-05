@@ -4,8 +4,9 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 
 import { db } from '@/lib/db';
 import authConfig from '@/auth.config';
-import { getUserByEmail, getUserById } from './data/user';
+import { getUserById } from './data/user';
 import { UserRole } from '@prisma/client';
+import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation';
 
 declare module 'next-auth' {
   interface Session {
@@ -71,7 +72,6 @@ export const {
       return session;
     },
     async signIn({ user, account }) {
-      console.log({ user, account });
       // Allow OAuth without email verification
       if (account?.provider !== 'credentials') {
         return true;
@@ -83,7 +83,22 @@ export const {
         return false;
       }
 
-      // TODO: Add 2FA check
+      if (existingUser.isTwoFactorEnabled) {
+        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
+          existingUser.id
+        );
+
+        if (!twoFactorConfirmation) {
+          return false;
+        }
+
+        await db.twoFactorConfirmation.delete({
+          where: {
+            id: twoFactorConfirmation.id,
+          },
+        });
+      }
+
       return true;
     },
   },
