@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useCallback, useState, useTransition } from 'react';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,8 +21,11 @@ import { Button } from '@/components/ui/button';
 import { FormError } from '@/components/form-error';
 import { login } from '@/actions/login';
 import { FormSuccess } from '../form-success';
+import { useSearchParams } from 'next/navigation';
 
 export function LoginForm() {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl');
   const [isPending, startTransition] = useTransition();
   const [success, setSuccess] = useState<string | undefined>('');
   const [error, setError] = useState<string | undefined>('');
@@ -40,7 +43,7 @@ export function LoginForm() {
     setError('');
     setSuccess('');
     startTransition(() => {
-      login(values)
+      login(values, callbackUrl)
         .then((data) => {
           if (data?.error) {
             form.reset();
