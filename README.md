@@ -17,6 +17,38 @@ So this is a good opportunity to practice coding. By refactor this project, I co
 5. Responsive web design
 6. Testing
 
+# FEATURES
+
+## Register
+
+- Use email, name and password to register new user
+- Send confirmation email to the user after the registration, user needs to input the password again.
+- If email already exists which was used by OAuth methods before, add password to the user.
+
+## Sign-in
+
+- Credendials: email and password - 2FA email for better security
+- OAuth: Google and Github
+
+## Update
+
+- Can ONLY update name
+- Password can only be reset (if credentials exists) in the Sign-in page
+
+## Sign-out
+
+- Simply sign-out function, nothing special
+
+## Others
+
+- Validations
+  - Client-side: use react-hook-form to display errors
+  - Server-side: use toast to display errors
+- Expirations
+  - Email confirmation: 5 minutes
+  - Reset password: 5 minutes
+  - 2FA verification: 1 minute
+
 # TECH STACKS
 
 - Next.js 14.2.4
