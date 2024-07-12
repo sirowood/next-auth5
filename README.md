@@ -1,36 +1,153 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# INTRODUCTION
 
-## Getting Started
+This is a learning project following the tutorial of Antonio: [Next Auth 5 - Advanced Guide]('https://www.codewithantonio.com/projects/auth-masterclass')
 
-First, run the development server:
+It uses [Next Auth 5]('https://authjs.dev/') to handle the authorization of web application in [Next.js V14]('https://nextjs.org/') framework.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+The tutorial was very inspiring, I get to know many libraries from it. But after the tutorial, I found myself not happy with the folder sturcture and code styles, so I decide to refactor the whole application following my own logic and coding style. Of course the tutorial was not aimed at such points, it just focus on how to use the Next Auth 5, which was clearly pointed out in the turorial.
+
+So this is a good opportunity to practice coding. By refactor this project, I could strengthen my understanding of the techs it uses, and improve my ability of wrting documentation.
+
+## WHAT CAN BE IMPROVED OF THE ORIGINAL CODE BASE
+
+1. File Structure
+2. Data flow logic
+3. Naming convention
+4. Reusable components/modules
+5. Responsive web design
+6. Testing
+
+# TECH STACKS
+
+- Next.js 14.2.4
+- Next Auth 5.0.0-beta.18
+- Prisma 5.16.1
+- React-hook-form 7.52.1
+- Zod 3.23.8
+- Resend 3.4.0
+- Sonner - 1.5.0
+
+# STRUCTURE
+
+## Original
+
+**Only shows non-auto created files**
+
+```
+.
+  ├── actions
+      ├── admin.ts
+      ├── login.ts
+      ├── logout.ts
+      ├── new-password.ts
+      ├── new-verification.ts
+      ├── register.ts
+      ├── reset.ts
+      └── settings.ts
+  ├── app
+      ├── (protected)
+          ├── _components
+          ├── admin
+          ├── client
+          ├── server
+          ├── settings
+          └── layout.tsx
+      ├── api
+          ├── admin
+          └── auth
+      ├── auth
+          ├── error
+          ├── login
+          ├── new-password
+          ├── new-verification
+          ├── register
+          ├── reset
+          └── layout.tsx
+      ├── layout.tsx
+      └── page.tsx
+  ├── components
+      ├── auth
+          ├── back-button.tsx
+          ├── card-wrapper.tsx
+          ├── header.tsx
+          ├── login-button.tsx
+          ├── login-form.tsx
+          ├── logout-button.tsx
+          ├── new-password-form.tsx
+          ├── new-verification-form.tsx
+          ├── register-form.tsx
+          ├── reset-form.tsx
+          ├── role-gate.tsx
+          ├── social.tsx
+          └── user-button.tsx
+      ├── ui
+      ├── form-error.tsx
+      ├── form-success.tsx
+      └── user-info.tsx
+  ├── data
+      ├── account.ts
+      ├── password-reset-token.ts
+      ├── two-factor-confirmation
+      ├── two-factor-token.ts
+      ├── user.ts
+      └── verification-token.ts
+  ├── hooks
+      ├── user-current-role.ts
+      └── use-current-user.ts
+  ├── lib
+      ├── auth.ts
+      ├── db.ts
+      ├── mail.ts
+      ├── tokens.ts
+      └── utils.ts
+  ├── prisma
+  ├── public
+  ├── schemas
+      └── index.ts
+  ├── auth.config.ts
+  ├── auth.ts
+  ├── middleware.ts
+  ├── next-auth.d.ts
+  └── routes.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## REFACTORED
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+// TODO
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# REFACTOR PLAN
 
-## Learn More
+1. Features design
+2. ERD
+3. Data flow chart
+4. Document Restful API endpoints
+5. Register module
+6. Email confirmation module
+7. SignIn module
+8. 2FA verification module
+9. Settings
+10. Testing (Optional but better have)
 
-To learn more about Next.js, take a look at the following resources:
+# ROUTES AND ENDPOINTS
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+/sign-in
 
-## Deploy on Vercel
+/sign-in/password-reset
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+/sign-up
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+/sign-up/confirm/{token}
+
+## Endpoints
+
+/api/v1/[...]
+
+# OTHERS
+
+**_This section is for temporary use, I may modify/delete it during the refactoring_**
+
+When verifiying the email after the registration, user should input the password again. This could better handle if user typo email address.
+
+Find a way so that user have the same 'user' when login using credential, Google or GitHub. Which I found Prisma.io is function in this way. And Prisma.io is not allowed user to modify the password, not allowed to change email. If user forgot password, they can only use 'forgot password' function.
