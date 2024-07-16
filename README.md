@@ -27,7 +27,7 @@ So this is a good opportunity to practice coding. By refactor this project, I co
 
 ## Sign-in
 
-- Credendials: email and password - 2FA email for better security
+- Credendials: email and password - ~~2FA email for better security~~
 - OAuth: Google and Github
 
 ## Update
@@ -47,7 +47,11 @@ So this is a good opportunity to practice coding. By refactor this project, I co
 - Expirations
   - Email confirmation: 5 minutes
   - Reset password: 5 minutes
-  - 2FA verification: 1 minute
+  - ~~2FA verification: 1 minute~~
+
+# DATA FLOW CHART
+
+![Data flow chart](DFC.png)
 
 # TECH STACKS
 
@@ -149,16 +153,16 @@ So this is a good opportunity to practice coding. By refactor this project, I co
 
 # REFACTOR PLAN
 
-1. Features design
-2. ERD
-3. Data flow chart
-4. Document Restful API endpoints
-5. Register module
-6. Email confirmation module
-7. SignIn module
-8. 2FA verification module
-9. Settings
-10. Testing (Optional but better have)
+- [x] Features design
+- [x] ERD
+- [x] Data flow chart
+- [] Document Restful API endpoints
+- [] Register module
+- [] Email confirmation module
+- [] SignIn module
+- [] 2FA verification module
+- [] Settings
+- [] Testing (Optional but better have)
 
 # ROUTES AND ENDPOINTS
 
@@ -167,6 +171,8 @@ So this is a good opportunity to practice coding. By refactor this project, I co
 /sign-in
 
 /sign-in/password-reset
+
+/sign-in/password-reset/{token}
 
 /sign-up
 
