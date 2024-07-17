@@ -156,31 +156,37 @@ So this is a good opportunity to practice coding. By refactor this project, I co
 - [x] Features design
 - [x] ERD
 - [x] Data flow chart
-- [] Document Restful API endpoints
-- [] Register module
-- [] Email confirmation module
-- [] SignIn module
-- [] 2FA verification module
-- [] Settings
-- [] Testing (Optional but better have)
+- [x] Document Restful API endpoints
+- [ ] Register module
+- [ ] Email confirmation module
+- [ ] SignIn module
+- [ ] ~~2FA verification module~~
+- [ ] Settings
+- [ ] Testing (Optional but better have)
 
 # ROUTES AND ENDPOINTS
 
 ## Routes
 
-/sign-in
-
-/sign-in/password-reset
-
-/sign-in/password-reset/{token}
-
-/sign-up
-
-/sign-up/confirm/{token}
+- /sign-up
+- /sign-up/confirm/{token}
+- /sign-in
+- /sign-in/password-reset
+- /sign-in/password-reset/{token}
+- /settings
 
 ## Endpoints
 
-/api/v1/[...]
+prefix: /api/auth/[...]
+
+- POST Register: /register
+- POST Confirm email: /register/confirm/{token}
+- POST Login: /login
+- POST Request reset password: /password-reset
+- POST Confirm reset password: /password-reset/confirm/{token}
+- PUT Update name: /settings
+
+For detailed API endpoints, please refer to the [Endpoints Documentation](./ENDPOINTS.md).
 
 # OTHERS
 
